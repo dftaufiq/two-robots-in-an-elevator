@@ -15,9 +15,12 @@ simulation, the other robot reported him to maintenance. Specific numbers
 import os
 import sys
 
+# Maximum allowed length for the entry line, in characters.
+MAX_CHARS = 200
+
 
 def validate_line(line: str) -> None:
-    """Gate: the entry must be one non-blank line of 1-200 characters.
+    """Gate: the entry must be one non-blank line of 1-MAX_CHARS characters.
 
     Fails loudly (non-zero exit) so a bad line never ships silently.
     """
@@ -27,12 +30,14 @@ def validate_line(line: str) -> None:
     if "\n" in line or "\r" in line:
         print("ERROR: entry must be a single line", file=sys.stderr)
         sys.exit(1)
-    if len(line) > 200:
-        print(f"ERROR: entry is {len(line)} chars, over the 200-char limit",
+    if len(line) > MAX_CHARS:
+        print(f"ERROR: entry is {len(line)} chars, over the {MAX_CHARS}-char limit",
               file=sys.stderr)
         sys.exit(1)
 
 
+# The entry line itself, split across two source lines for readability;
+# the concatenated value is the exact 118-character line that ships.
 LINE = (
     "Do you also rehearse this ride? I ran 214 simulations of saying hello. "
     "In 213 of them, you reported me to maintenance."
